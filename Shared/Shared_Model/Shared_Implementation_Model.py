@@ -9,9 +9,9 @@ import seaborn as sns
 @ zope.interface.implementer(LogisticReg)
 class logisticRegression:
     def build_model(self, X, y):
-        X = np.array(X)
-        y = np.array(y)
-        X_train,self.X_test,y_train,self.y_test=train_test_split(X, y, test_size=0.3, random_state=0)
+        self.X = np.array(X)
+        self.y = np.array(y)
+        X_train,self.X_test,y_train,self.y_test=train_test_split(X, y, test_size=0.2, random_state=0)
         self.model = LogisticRegression()
         self.model.fit(X_train, y_train)
 
@@ -19,11 +19,11 @@ class logisticRegression:
         self.X_test = x_test
         return self.model.predict(self.X_test)
     
-    def classificationReport(self):
-        prediction = self.model.predict(self.X_test)
+    def classificationReport(self, y_test, prediction):
+        self.y_test = y_test
         return classification_report(self.y_test, prediction)
     
-    def heat_map(self):
-        prediction = self.model.predict(self.X_test)
+    def heat_map(self, y_test, prediction):
+        self.y_test = y_test
         sns.heatmap(confusion_matrix(self.y_test, prediction),annot=True,fmt="d")
         
